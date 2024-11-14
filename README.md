@@ -20,7 +20,7 @@ npm run build
 ```
 3. Deploy the `dist` folder to a web server or container.
 
-## How to run backend
+## How to run backend without Docker
 ### 1. Create and enter a venv
 This is recommended to avoid issues with differing versions of packages in project and local environment. In addition, this avoids bloat not necessary for the project being added when freezing requirements.
 
@@ -31,13 +31,76 @@ This is recommended to avoid issues with differing versions of packages in proje
 3. Enter your venv
     - On Ubuntu: `source venv/bin/activate`
 
-### 2. Install requirements
+### 2. Set up PostgreSQL database
+1. Download PostgreSQL
+2. Create a database
+3. Create a .env file in the root folder using this format:
+
+    `DJANGO_SECRET_KEY="your_django_secret_key"`
+
+    `DJANGO_DEBUG="True"`
+
+    `DB_NAME="your_database_name"`
+
+    `DB_USER="postgres"`
+
+    `DB_PASSWORD="your_database_password"`
+
+    `DB_HOST="localhost"`
+
+    `DB_PORT="5432""`
+
+    `VITE_API_BASE_URL="http://localhost:8000"`
+
+    Insert database name, password and django secret key.
+
+### 3. Install requirements
 1. Open the folder where you have this project
 2. Open the `server` folder
 3. Install the requirements by running `pip install -r requirements.txt`
 
-### 3. Run server
-Open the `server` folder and run the following command: `python3 -m server`
+### 4. Run server for websocket
+1. Open the `server` folder 
+2. Run `python3 -m server`
+3. Verify that websocket is running 
+
+### 5 Run server
+1. Open the `server/server_comm` 
+2. Run `python3 manage.py migrate`
+3. Run `python3 manage.py runserver`
+
+## How to run backend with Docker
+### 1. Create and enter a venv
+Same step as for running backend without docker
+
+### 2. Set up PostgreSQL database
+1. Download PostgreSQL
+2. Create a database
+3. Create a .env in root of project and insert the following:
+
+    `DATABASE_URL=postgres://admin:admin@db:5432/kundestyrt_db`
+
+    `DJANGO_SECRET_KEY=[add key]`
+
+    `DJANGO_DEBUG='True'`
+
+    `DB_NAME='kundestyrt_db'`
+
+    `DB_USER='admin'`
+
+    `DB_PASSWORD='admin'`
+
+    `DB_HOST='db'`
+
+    `DB_PORT='5432'`
+
+    `VITE_API_BASE_URL='http://localhost:8000'`
+
+### 3. Download Docker
+Download and open Docker
+
+### 4. Run server
+In root folder of project run `docker-compose up --build`
 
 ## How to update requirements
 If you have added new pip packages to the project and want to save them for everyone to use, when in your venv (ensure that you are in the venv so you don't freeze unnecessary packages), run the following command in the server folder: `pip freeze > requirements.txt`
